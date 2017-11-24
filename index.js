@@ -44,9 +44,9 @@ class ChipFanAccessory {
     this.INACTIVE = 1;
 
     const {Gpio} = require('chip-gpio');
-    this.speeds = speeds
-      .map(pin => new Gpio(pin, 'out'))
-      .forEach(gpio => gpio.write(this.INACTIVE));
+    this.speeds = speeds.map(pin => new Gpio(pin, 'out'));
+
+    this.speeds.forEach(gpio => gpio.write(this.INACTIVE));
 
     this.lastKnownIsActive = false;
     this.lastKnownSpeed = 50;
@@ -83,8 +83,8 @@ class ChipFanAccessory {
 
   setSpeed(speed) {
     return new Promise((resolve) => {
-      const range = 100 / this.speeds.length;
-      const speedNumber = Math.floor(Math.min(speed, 99) / range); 
+      const range = 100 / (this.speeds.length - 1);
+      const speedNumber = Math.ceil(speed / range);
       this.speeds.forEach((gpio, index) => {
         if (index === speedNumber) {
           gpio.write(this.ACTIVE);
