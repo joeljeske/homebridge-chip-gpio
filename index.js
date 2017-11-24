@@ -30,16 +30,26 @@ class ChipPlatform{
 
   accessories(callback) {
     callback([
-      new ChipFanAccessory("Test Fan")
+      new ChipFanAccessory("Test Fan", [0,1,2,3])
     ]);
   }
 }
 
 
 class ChipFanAccessory {
-  constructor(name) {
+  constructor(name, speeds) {
     this.name = name;
     this.active = true;
+    this.ACTIVE = 0;
+    this.INACTIVE = 1;
+
+    const {Gpio} = requre('chip-gpio');
+    this.speeds = speeds
+      .map(pin => new Gpio(pin, 'out'))
+      .forEach(gpio => gpio.write(this.INACTIVE));
+
+    this.lastKnownIsActive = false;
+    this.lastKnownSpeed = 50;
   }
 
   getServices() {
@@ -47,30 +57,46 @@ class ChipFanAccessory {
     var activeCharacteristic = fanService.getCharacteristic(Characteristic.Active);
     var rotationSpeedCharacteristic = fanService.addCharacteristic(Characteristic.RotationSpeed);
 
-        // power
-   activeCharacteristic
-    .on("get", (callback) => {
-      console.log("getting active " + this.active);
-      callback(null, this.active ? Characteristic.Active.ACTIVE : Characteristic.Active.INACTIVE);
-    })
-    .on("set", (value, callback) => {
-      this.active = !!value;
-      console.log("setting active " + this.active);
-      callback(null);
-    });
+    // power
+    activeCharacteristic
+      .on("get", (callback) => {
+        callback(null, this.lastKnownIsActive ? Characteristic.Active.ACTIVE : Characteristic.Active.INACTIVE);
+      })
+      .on("set", async (value, callback) => {
+        this.lastKnownIsActive = !!value;
+        await this.setSpeed(this.lastKnownIsActive ? this.lastKnownSpeed : 0);
+        callback(null);
+      });
 
-        // speed_level natural_level
+    // speed_level natural_level
     rotationSpeedCharacteristic
       .on("get", (callback) => {
-        console.log("setting speed " + this.speed);
-        callback(null, this.speed);
+        callback(null, this.lastKnownSpeed);
       })
       .on("set", (value, callback) => {
-          this.speed = value;
-          console.log("setting speed " + this.speed);
-          callback(null);
+        this.lastKnownSpeed = value;
+        callback(null);
       });
 
     return [fanService];
+  }
+
+  setSpeed(speed) {
+    return new Promise((resolve) => {
+      const range = 100 / this.speeds.length;
+      const speedNumber = Math.floor(Math.min(speed, 99) / range); 
+      this.speeds.forEach((gpio, index) => {
+        if (index === speedNumber) {
+          gpio.write(this.ACTIVE);
+          // We hold it for 300ms
+          setTimeout(() => {
+            gpio.write(this.INACTIVE);
+            resolve();
+          }, 300);
+        } else {
+          gpio.write(this.INACTIVE);
+        }
+      });
+    });
   }
 }
