@@ -43,7 +43,7 @@ class ChipFanAccessory {
     this.ACTIVE = 0;
     this.INACTIVE = 1;
 
-    const {Gpio} = requre('chip-gpio');
+    const {Gpio} = require('chip-gpio');
     this.speeds = speeds
       .map(pin => new Gpio(pin, 'out'))
       .forEach(gpio => gpio.write(this.INACTIVE));
