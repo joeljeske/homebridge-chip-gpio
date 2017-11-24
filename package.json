@@ -1,0 +1,28 @@
+{
+  "name": "homebridge-chip-gpio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeljeske/homebridge-chip-gpio.git"
+  },
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joeljeske/homebridge-chip-gpio/issues"
+  },
+  "homepage": "https://github.com/joeljeske/homebridge-chip-gpio#readme",
+  "engines": {
+    "homebridge": ">=0.4"
+  },
+  "dependencies": {
+    "chip-gpio": "^1.1.2"
+  }
+}
