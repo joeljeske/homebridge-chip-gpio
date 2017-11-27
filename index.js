@@ -30,7 +30,7 @@ class ChipPlatform{
 
   accessories(callback) {
     callback([
-      new ChipFanAccessory("Test Fan", [0,1,2,3])
+      new ChipFanAccessory("Test Fan", [1,3,5,7])
     ]);
   }
 }
