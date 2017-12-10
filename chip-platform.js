@@ -1,7 +1,7 @@
 
 const DecimalWriter = require('./decimal-writer');
 const ChipFanAccessory = require('./chip-fan');
-const ChipSwitchAccessory = require('./chip-light');
+const ChipSwitchAccessory = require('./chip-switch');
 
 // Platform constructor
 // config may be null
