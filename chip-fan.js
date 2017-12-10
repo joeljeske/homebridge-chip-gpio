@@ -2,14 +2,14 @@
 
 class ChipFanAccessory {
   constructor(platform, name, speeds) {
-  	this.Service = this.platform.constructor.Service;
-  	this.Characteristic = this.platform.constructor.Characteristic;
-
     this.platform = platform;
     this.name = name;
     this.speeds = speeds;
     this.lastKnownIsActive = false;
     this.lastKnownSpeed = 50;
+
+    this.Service = this.platform.constructor.Service;
+  	this.Characteristic = this.platform.constructor.Characteristic;
   }
 
   getServices() {
