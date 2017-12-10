@@ -26,7 +26,7 @@ class ChipPlatform{
 
   accessories(callback) {
     callback([
-    	new ChipLightAccessory(this, "Light", 1)
+    	new ChipLightAccessory(this, "Light", 1),
       new ChipFanAccessory(this, "Fan", [6, 7, 4, 5]), // The decimal numbers to write
       new ChipFanAccessory(this, "Bedroom Fan", [3, 2, 1, 0]) // The decimal numbers to write
     ]);
