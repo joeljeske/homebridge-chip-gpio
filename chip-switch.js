@@ -14,7 +14,7 @@ class ChipSwitchAccessory {
   }
 
   getServices() {
-    const switchService = new this.Service.Switch(this.name);
+    const switchService = new this.Service.Switch(this.name, 'Switch');
     const onCharacteristic = switchService.getCharacteristic(this.Characteristic.On);
 
     onCharacteristic
@@ -24,22 +24,27 @@ class ChipSwitchAccessory {
         .on('set', (on, callback) => {
             this.lastKnownIsOn = on
             this.pin.write(0);
-            setTimeout(function() {
+            setTimeout(() => {
             	this.pin.write(1);
             	callback(null);
             }, 300);
         });
 
 	// We make a toggle switch in case the on/off is reversed due to a reboot
-    const toggleService = new this.Service.Switch(this.name + '-Toggle');
-    const toggleOnCharacteristic = switchService.getCharacteristic(this.Characteristic.On);
+    const toggleService = new this.Service.Switch(this.name, 'Toggle');
+    const toggleOnCharacteristic = toggleService.getCharacteristic(this.Characteristic.On);
 
     toggleOnCharacteristic
         .on('get', (callback) => {
         	callback(null, this.lastKnownIsOn);
         })
         .on('set', (on, callback) => {
-            this.lastKnownIsOn = on;
+        	// Turn on/off light without changing the state
+            this.pin.write(0);
+            setTimeout(() => {
+            	this.pin.write(1);
+            	callback(null);
+            }, 300);
         });
 
 
