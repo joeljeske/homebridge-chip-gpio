@@ -22,9 +22,9 @@ class DecimalWriter {
   _write(val) {
   	console.log('starting write to ' + val);
     return new Promise((resolve) => {
-      let shifter = 1;
+      var shifter = 1;
 
-      for (const i = this.bits.length; i > 0; i--) { 
+      for (var i = this.bits.length; i > 0; i--) { 
       	const gpioPin = this.bits[i - 1];
       	console.log(`idx: ${i - 1}; ${shifter} & ${val} = ${shifter & val} = .write(${shifter & val ? 1 : 0})`);
         // Write a 1 if the bit is on at that index
