@@ -26,11 +26,11 @@ class DecimalWriter {
 
       for (const i = this.bits.length; i > 0; i--) { 
       	const gpioPin = this.bits[i - 1];
-      	console.log(`idx: ${i-1}; ${shifter} & ${val} = ${shifter & val} = ${shifter & val ? 1 : 0}`);
+      	console.log(`idx: ${i - 1}; ${shifter} & ${val} = ${shifter & val} = .write(${shifter & val ? 1 : 0})`);
         // Write a 1 if the bit is on at that index
-        gpioPin.write(shifter & val ? 1 : 0);
+        gpioPin.write(val & shifter ? 1 : 0);
         // Shift the on bit to the left
-        shifter = shifter << 0;
+        shifter = shifter << 1;
       }
 
       this.enable.write(0);
