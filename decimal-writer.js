@@ -3,8 +3,8 @@ const _ = require('lodash');
 
 class DecimalWriter {
   constructor(bits, enable) {
-    this.bits = bits.map(pin => new Gpio(pin, 'out')); // The GPIO pins that make up the binary write out. Left is most significant
-    this.enable = new Gpio(enable); // GPIO pin to enable the "write"
+    this.bits = bits.map(pin => new Gpio(pin, 'out'));
+    this.enable = new Gpio(enable); 
 
 
     // Disable immediatley

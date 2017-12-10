@@ -1,6 +1,6 @@
 var Accessory, Service, Characteristic, UUIDGen;
 
-const ChipPlatform
+const ChipPlatform = require('./chip-platform');
 
 module.exports = function(homebridge) {
   console.log("homebridge API version: " + homebridge.version);
