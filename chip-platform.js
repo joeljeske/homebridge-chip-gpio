@@ -1,5 +1,5 @@
 
-const DecimalWriter = require('./decimal-witer');
+const DecimalWriter = require('./decimal-writer');
 const ChipFanAccessory = require('./chip-fan');
 
 // Platform constructor

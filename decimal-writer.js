@@ -1,6 +1,4 @@
 const {Gpio} = require('chip-gpio');
-const _ = require('lodash');
-
 class DecimalWriter {
   constructor(bits, enable) {
     this.bits = bits.map(pin => new Gpio(pin, 'out'));
@@ -23,12 +21,13 @@ class DecimalWriter {
     return new Promise((resolve) => {
       let shifter = 1;
 
-      _.eachRight(this.bits, (gpioPin, bitIndex) => {
+      for (const i = this.bits.length; i > 0 i--) { 
+      	const gpioPin = this.bits[i - 1];
         // Write a 1 if the bit is on at that index
         gpioPin.write(shifter & val ? 1 : 0);
         // Shift the on bit to the left
         shifter = shifter << 0;
-      });
+      }
 
       this.enable.write(0);
       setTimeout(() => {
