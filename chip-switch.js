@@ -22,6 +22,10 @@ class ChipSwitchAccessory {
         	callback(null, this.lastKnownIsOn);
         })
         .on('set', (on, callback) => {
+        	if (this.lastKnownIsOn === on) {
+        		return callback(null);
+        	}
+        	
             this.lastKnownIsOn = on
             this.pin.write(0);
             setTimeout(() => {
@@ -36,7 +40,8 @@ class ChipSwitchAccessory {
 
     toggleOnCharacteristic
         .on('get', (callback) => {
-        	callback(null, this.lastKnownIsOn);
+        	// Always be "off"
+        	callback(null, false);
         })
         .on('set', (on, callback) => {
         	// Turn on/off light without changing the state
